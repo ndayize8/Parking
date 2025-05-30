@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4361ee;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3a0ca3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Key shape -->
+  <path d="M30,50 Q50,20 70,50 T110,50" fill="none" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round"/>
+  <rect x="110" y="30" width="20" height="40" rx="5" fill="url(#gradient)"/>
+  
+  <!-- Car shape -->
+  <path d="M130,60 L150,60 Q160,60 160,50 L160,40 Q160,30 150,30 L140,30 Q130,30 130,40 L130,50 Q130,60 140,60" 
+        fill="none" stroke="url(#gradient)" stroke-width="3"/>
+  <circle cx="140" cy="60" r="5" fill="url(#gradient)"/>
+  <circle cx="150" cy="60" r="5" fill="url(#gradient)"/>
+  
+  <!-- Text -->
+  <text x="180" y="60" font-family="Arial" font-size="24" font-weight="bold" fill="url(#gradient)" text-anchor="end">KeyTop</text>
+</svg>
