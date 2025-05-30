@@ -266,7 +266,6 @@
             transition: var(--transition);
         }
         
-
         input:focus {
             outline: none;
             border-color: var(--primary);
@@ -367,7 +366,7 @@
 
         .parking-grid {
             display: grid;
-            grid-template-columns: repeat(5,1fr);
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
@@ -712,7 +711,15 @@
                     return { success: false, message: "Parking is full" };
                 }
 
-                const emptySlotIndex = this.parkingSlots.indexOf(null);
+                // Find the last empty slot
+                let emptySlotIndex = -1;
+                for (let i = this.parkingSlots.length - 1; i >= 0; i--) {
+                    if (this.parkingSlots[i] === null) {
+                        emptySlotIndex = i;
+                        break;
+                    }
+                }
+
                 const entryTime = new Date();
                 
                 this.parkingSlots[emptySlotIndex] = {
@@ -828,21 +835,17 @@
 
         function renderParkingSlots(highlightSlots = []) {
             parkingGrid.innerHTML = '';
+            
+            // Only show occupied slots
             smartPark.parkingSlots.forEach((slot, index) => {
-                const slotElement = document.createElement('div');
-                slotElement.className = 'parking-slot';
-                if (highlightSlots.includes(index + 1)) {
-                    slotElement.style.boxShadow = '0 0 0 3px var(--warning)';
-                }
-                
-                if (slot === null) {
-                    slotElement.innerHTML = `
-                        <div class="slot-number">${index + 1}</div>
-                        <div class="slot-status available">AVAILABLE</div>
-                        <div class="car-animation">🚗</div>
-                    `;
-                    slotElement.classList.add('pulse');
-                } else {
+                if (slot !== null) {
+                    const slotElement = document.createElement('div');
+                    slotElement.className = 'parking-slot';
+                    
+                    if (highlightSlots.includes(index + 1)) {
+                        slotElement.style.boxShadow = '0 0 0 3px var(--warning)';
+                    }
+                    
                     const currentFee = smartPark.calculateCurrentFee(slot.entryTime);
                     slotElement.innerHTML = `
                         <div class="slot-number">${index + 1}</div>
@@ -853,8 +856,8 @@
                             <p class="current-fee fee-update">Current fee: ${currentFee} RWF</p>
                         </div>
                     `;
+                    parkingGrid.appendChild(slotElement);
                 }
-                parkingGrid.appendChild(slotElement);
             });
 
             availableSlotsDisplay.textContent = smartPark.getAvailableSlots();
